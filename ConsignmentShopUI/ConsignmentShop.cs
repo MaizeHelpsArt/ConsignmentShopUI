@@ -15,9 +15,11 @@ namespace ConsignmentShopUI
     {
         private Store store = new Store();
         private List<Item> shoppingCartData = new List<Item>();
+        private decimal storeProfit = 0;
         BindingSource itemsBinding = new BindingSource();
         BindingSource cartBinding = new BindingSource();
         BindingSource vendorsBinding = new BindingSource();
+        
         
 
         public ConsignmentShop()
@@ -113,15 +115,23 @@ namespace ConsignmentShopUI
             {
                 item.Sold = true;
                 item.Owner.PaymentDue += (decimal)item.Owner.Commission * item.Price;
+                storeProfit += (1 - (decimal)item.Owner.Commission) * item.Price;
             }
 
             shoppingCartData.Clear();
 
             itemsBinding.DataSource = store.Items.Where(x => x.Sold == false).ToList();
 
+            storeProfitValue.Text = string.Format($"{storeProfit}");
+
             cartBinding.ResetBindings(false);
             itemsBinding.ResetBindings(false);
             vendorsBinding.ResetBindings(false);
+        }
+
+        private void storeProfitLabel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
